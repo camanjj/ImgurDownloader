@@ -17,8 +17,6 @@ class ViewController: UIViewController {
   let cellId = "ImageCell"
   
   // cache used to store the images in memory
-  var imageCache = [String: UIImage]()
-  var fetching = Set<String>()
   var images = [Image]()
   var currentSearchTerm: String?
   
@@ -49,58 +47,8 @@ class ViewController: UIViewController {
     
   }
   
-  func fetchImage(with link: String, _ indexPath: IndexPath, _ imageView: UIImageView? = nil) {
-    
-    // if we are already fetching for this link do nothing else
-    if fetching.contains(link) {
-      return
-    }
-    
-    fetching.insert(link)
-    
-    let session = URLSession.shared
-    
-    guard let url = URL(string: link) else {
-      return
-    }
-    
-    session.dataTask(with: url) { (data, _, error) in
-      
-      if let error = error {
-        print("Error fetching image: \(error)")
-        return
-      }
-      
-      DispatchQueue.main.async {
-        
-        // make sure we can make an image from the data
-        guard let data = data, let image = UIImage(data: data) else {
-          return
-        }
-        
-        // add the image to the cache
-        self.imageCache[link] = image
-        
-//        imageView.image = image
-        
-        // if the cell is visible, show the image and stop the indicator
-        if let cell = self.imagesController?.collectionView?.cellForItem(at: indexPath) as? ImageCell {
-          cell.activityView.stopAnimating()
-          cell.imageView.image = image
-          cell.contentView.layoutIfNeeded()
-        }
-      }
-      
-      
-    }.resume()
-    
-  }
-
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    
-    // clear out the image cache if we recieved a memory warning
-    imageCache = [String:UIImage]()
   }
 
 }
@@ -147,17 +95,7 @@ extension ViewController: UICollectionViewDataSource {
     
     let link = images[indexPath.row].thumbnail
     cell.imageView.kf.indicatorType = .activity
-    cell.imageView.kf.setImage(with: ImageResource(downloadURL: URL(string: link)))
-    
-    // load the image if cached, otherwise fetch it
-    if let image = imageCache[link] {
-      cell.activityView.stopAnimating()
-      cell.imageView.image = image
-    } else {
-      cell.activityView.startAnimating()
-      cell.imageView.image = nil
-      fetchImage(with: link, indexPath, cell.imageView)
-    }
+    cell.imageView.kf.setImage(with: ImageResource(downloadURL: URL(string: link)!))
     
     return cell
     
@@ -177,38 +115,10 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    
-    let cell = cell as! ImageCell
-    let link = images[indexPath.row].thumbnail
-    
-    // load the image if cached, otherwise fetch it
-    if let image = imageCache[link] {
-      cell.activityView.stopAnimating()
-      cell.imageView.image = image
-    } else {
-      cell.activityView.startAnimating()
-      cell.imageView.image = nil
-      fetchImage(with: link, indexPath, cell.imageView)
-    }
-    
     if indexPath.row == images.count-1 {
       // TODO: load more rows
       print("At end")
     }
     
   }
-
-}
-
-extension ViewController: UICollectionViewDataSourcePrefetching {
-  func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-    
-    indexPaths.forEach {
-      let link = images[$0.row].thumbnail
-      fetchImage(with: link, $0)
-    }
-    
-  }
-  
-  
 }

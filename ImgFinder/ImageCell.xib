@@ -19,39 +19,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="placeholder text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TRp-Kv-7gJ">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yaH-Sj-VR6">
                         <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                     </imageView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="H2f-0U-x62">
-                        <rect key="frame" x="40" y="40" width="20" height="20"/>
-                    </activityIndicatorView>
                 </subviews>
             </view>
             <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="yaH-Sj-VR6" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="3pw-En-yy8"/>
                 <constraint firstItem="yaH-Sj-VR6" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="5uJ-Xy-L5H"/>
-                <constraint firstItem="H2f-0U-x62" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="8Q5-hS-t0l"/>
-                <constraint firstItem="H2f-0U-x62" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Aid-a1-grF"/>
-                <constraint firstItem="TRp-Kv-7gJ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="GUI-e4-FbR"/>
                 <constraint firstAttribute="trailing" secondItem="yaH-Sj-VR6" secondAttribute="trailing" id="Ld3-0a-f4G"/>
-                <constraint firstAttribute="trailing" secondItem="TRp-Kv-7gJ" secondAttribute="trailing" id="Oab-Gg-jM2"/>
-                <constraint firstAttribute="bottom" secondItem="TRp-Kv-7gJ" secondAttribute="bottom" id="h40-LW-GLX"/>
                 <constraint firstAttribute="bottom" secondItem="yaH-Sj-VR6" secondAttribute="bottom" id="nPV-9v-wWx"/>
-                <constraint firstItem="TRp-Kv-7gJ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="wkX-dH-kXt"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="100" height="100"/>
             <connections>
-                <outlet property="activityView" destination="H2f-0U-x62" id="N9y-h5-3iW"/>
                 <outlet property="imageView" destination="yaH-Sj-VR6" id="bA9-j8-f5R"/>
-                <outlet property="label" destination="TRp-Kv-7gJ" id="ito-9b-Drh"/>
             </connections>
             <point key="canvasLocation" x="59" y="96"/>
         </collectionViewCell>
