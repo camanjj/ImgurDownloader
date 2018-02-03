@@ -9,16 +9,14 @@
 import UIKit
 import Kingfisher
 
-class ViewController: UIViewController {
+class ImgurSearchController: UIViewController {
 
   @IBOutlet weak var searchButton: UIButton!
   var searchController: UISearchController?
   var imagesController: UICollectionViewController?
   let cellId = "ImageCell"
   
-  // cache used to store the images in memory
-  var images = [Image]()
-  var currentSearchTerm: String?
+  let viewModel = ImgurSearchViewModel()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -45,6 +43,10 @@ class ViewController: UIViewController {
     
     self.definesPresentationContext = true
     
+    viewModel.resultsUpdated = { [unowned self] term in
+      self.imagesController?.collectionView?.reloadData()
+    }
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -53,56 +55,34 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UISearchResultsUpdating {
+extension ImgurSearchController: UISearchResultsUpdating {
   
   func updateSearchResults(for searchController: UISearchController) {
-    
-    // only automatic search when there are more than 3 characters in the searchbar
-    guard let text = searchController.searchBar.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), text.count > 3 else {
-      return
-    }
-    
-    // don't search again if the text is the same
-    if let curTerm = currentSearchTerm, text == curTerm {
-      return
-    }
-    
-    currentSearchTerm = text
-    
-    // TODO: search with the text
-    ImgManager.shared.findImages(with: text) { [unowned self] (images) in
-      if let images = images {
-        self.images = images
-        DispatchQueue.main.async {
-            self.imagesController?.collectionView?.reloadData()
-        }
-        
-      }
-    }
-    
+    viewModel.findImages(for: searchController.searchBar.text)
   }
-  
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension ImgurSearchController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return images.count
+    return viewModel.numberOfImages()
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ImageCell
-    
-    let link = images[indexPath.row].thumbnail
     cell.imageView.kf.indicatorType = .activity
-    cell.imageView.kf.setImage(with: ImageResource(downloadURL: URL(string: link)!))
+    
+    // load the thumbnail if valid
+    if let link = viewModel.thumbnail(for: indexPath), let url = URL(string: link) {
+      cell.imageView.kf.setImage(with: ImageResource(downloadURL: url))
+    }
     
     return cell
     
   }
 }
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
+extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
@@ -115,9 +95,9 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    if indexPath.row == images.count-1 {
+    if indexPath.row == viewModel.numberOfImages() - 1 {
       // TODO: load more rows
-      print("At end")
+      viewModel.fetchNextPage()
     }
     
   }

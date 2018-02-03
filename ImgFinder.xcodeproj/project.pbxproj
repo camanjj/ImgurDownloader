@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		7170D400F2419309C6EBABCD /* Pods_ImgFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */; };
 		AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40E820252DA00089415C /* AppDelegate.swift */; };
-		AD3E40EB20252DA00089415C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40EA20252DA00089415C /* ViewController.swift */; };
+		AD3E40EB20252DA00089415C /* ImgurSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40EA20252DA00089415C /* ImgurSearchController.swift */; };
 		AD3E40EE20252DA00089415C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40EC20252DA00089415C /* Main.storyboard */; };
 		AD3E40F020252DA00089415C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40EF20252DA00089415C /* Assets.xcassets */; };
 		AD3E40F320252DA00089415C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40F120252DA00089415C /* LaunchScreen.storyboard */; };
@@ -18,14 +18,14 @@
 		ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F182025481C00D4925B /* ImgurResponse.swift */; };
 		ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1B2025716900D4925B /* ImageCell.swift */; };
 		ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F1C2025716900D4925B /* ImageCell.xib */; };
-		ADC50F202025996E00D4925B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* File.swift */; };
+		ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		56E51D629C70F643FEFB29DE /* Pods-ImgFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.release.xcconfig"; sourceTree = "<group>"; };
 		AD3E40E520252DA00089415C /* ImgFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImgFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD3E40E820252DA00089415C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AD3E40EA20252DA00089415C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AD3E40EA20252DA00089415C /* ImgurSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurSearchController.swift; sourceTree = "<group>"; };
 		AD3E40ED20252DA00089415C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AD3E40EF20252DA00089415C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD3E40F220252DA00089415C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -35,7 +35,7 @@
 		ADC50F182025481C00D4925B /* ImgurResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurResponse.swift; sourceTree = "<group>"; };
 		ADC50F1B2025716900D4925B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		ADC50F1C2025716900D4925B /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
-		ADC50F1F2025996E00D4925B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurSearchViewModel.swift; sourceTree = "<group>"; };
 		C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImgFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,7 +82,8 @@
 			isa = PBXGroup;
 			children = (
 				AD3E40E820252DA00089415C /* AppDelegate.swift */,
-				AD3E40EA20252DA00089415C /* ViewController.swift */,
+				AD3E40EA20252DA00089415C /* ImgurSearchController.swift */,
+				ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */,
 				AD3E40EC20252DA00089415C /* Main.storyboard */,
 				AD3E40EF20252DA00089415C /* Assets.xcassets */,
 				AD3E40F120252DA00089415C /* LaunchScreen.storyboard */,
@@ -91,7 +92,6 @@
 				ADC50F1A202564C400D4925B /* Models */,
 				ADC50F1B2025716900D4925B /* ImageCell.swift */,
 				ADC50F1C2025716900D4925B /* ImageCell.xib */,
-				ADC50F1F2025996E00D4925B /* File.swift */,
 			);
 			path = ImgFinder;
 			sourceTree = "<group>";
@@ -244,9 +244,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD3E40EB20252DA00089415C /* ViewController.swift in Sources */,
+				AD3E40EB20252DA00089415C /* ImgurSearchController.swift in Sources */,
 				AD3E40FD202536040089415C /* Image.swift in Sources */,
-				ADC50F202025996E00D4925B /* File.swift in Sources */,
+				ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
 				AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */,
 				AD3E40FB202533360089415C /* ImgurManager.swift in Sources */,
