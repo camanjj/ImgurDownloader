@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7170D400F2419309C6EBABCD /* Pods_ImgFinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */; };
 		AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40E820252DA00089415C /* AppDelegate.swift */; };
 		AD3E40EB20252DA00089415C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40EA20252DA00089415C /* ViewController.swift */; };
 		AD3E40EE20252DA00089415C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40EC20252DA00089415C /* Main.storyboard */; };
@@ -15,9 +16,13 @@
 		AD3E40FB202533360089415C /* ImgurManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FA202533360089415C /* ImgurManager.swift */; };
 		AD3E40FD202536040089415C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FC202536040089415C /* Image.swift */; };
 		ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F182025481C00D4925B /* ImgurResponse.swift */; };
+		ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1B2025716900D4925B /* ImageCell.swift */; };
+		ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F1C2025716900D4925B /* ImageCell.xib */; };
+		ADC50F202025996E00D4925B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		56E51D629C70F643FEFB29DE /* Pods-ImgFinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.release.xcconfig"; sourceTree = "<group>"; };
 		AD3E40E520252DA00089415C /* ImgFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImgFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD3E40E820252DA00089415C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD3E40EA20252DA00089415C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +33,11 @@
 		AD3E40FA202533360089415C /* ImgurManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurManager.swift; sourceTree = "<group>"; };
 		AD3E40FC202536040089415C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		ADC50F182025481C00D4925B /* ImgurResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurResponse.swift; sourceTree = "<group>"; };
+		ADC50F1B2025716900D4925B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		ADC50F1C2025716900D4925B /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
+		ADC50F1F2025996E00D4925B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImgFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +45,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7170D400F2419309C6EBABCD /* Pods_ImgFinder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ABCFD5D3186E9E7717AA5A72 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AD3E40DC20252DA00089415C = {
 			isa = PBXGroup;
 			children = (
 				AD3E40E720252DA00089415C /* ImgFinder */,
 				AD3E40E620252DA00089415C /* Products */,
+				F0738F511441C565EE5F3A89 /* Pods */,
+				ABCFD5D3186E9E7717AA5A72 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,10 +88,30 @@
 				AD3E40F120252DA00089415C /* LaunchScreen.storyboard */,
 				AD3E40F420252DA00089415C /* Info.plist */,
 				AD3E40FA202533360089415C /* ImgurManager.swift */,
+				ADC50F1A202564C400D4925B /* Models */,
+				ADC50F1B2025716900D4925B /* ImageCell.swift */,
+				ADC50F1C2025716900D4925B /* ImageCell.xib */,
+				ADC50F1F2025996E00D4925B /* File.swift */,
+			);
+			path = ImgFinder;
+			sourceTree = "<group>";
+		};
+		ADC50F1A202564C400D4925B /* Models */ = {
+			isa = PBXGroup;
+			children = (
 				AD3E40FC202536040089415C /* Image.swift */,
 				ADC50F182025481C00D4925B /* ImgurResponse.swift */,
 			);
-			path = ImgFinder;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F0738F511441C565EE5F3A89 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */,
+				56E51D629C70F643FEFB29DE /* Pods-ImgFinder.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -80,9 +121,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AD3E40F720252DA00089415C /* Build configuration list for PBXNativeTarget "ImgFinder" */;
 			buildPhases = (
+				0B839BCD45859D39EB3E7DED /* [CP] Check Pods Manifest.lock */,
 				AD3E40E120252DA00089415C /* Sources */,
 				AD3E40E220252DA00089415C /* Frameworks */,
 				AD3E40E320252DA00089415C /* Resources */,
+				E85390BEF3798EEAF2390807 /* [CP] Embed Pods Frameworks */,
+				909401DB65884CD6D3E06682 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -133,12 +177,67 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD3E40F320252DA00089415C /* LaunchScreen.storyboard in Resources */,
+				ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */,
 				AD3E40F020252DA00089415C /* Assets.xcassets in Resources */,
 				AD3E40EE20252DA00089415C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0B839BCD45859D39EB3E7DED /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ImgFinder-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		909401DB65884CD6D3E06682 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E85390BEF3798EEAF2390807 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AD3E40E120252DA00089415C /* Sources */ = {
@@ -147,9 +246,11 @@
 			files = (
 				AD3E40EB20252DA00089415C /* ViewController.swift in Sources */,
 				AD3E40FD202536040089415C /* Image.swift in Sources */,
+				ADC50F202025996E00D4925B /* File.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
 				AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */,
 				AD3E40FB202533360089415C /* ImgurManager.swift in Sources */,
+				ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +385,7 @@
 		};
 		AD3E40F820252DA00089415C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -299,6 +401,7 @@
 		};
 		AD3E40F920252DA00089415C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56E51D629C70F643FEFB29DE /* Pods-ImgFinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

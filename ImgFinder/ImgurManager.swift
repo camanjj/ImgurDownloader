@@ -23,6 +23,12 @@ class ImgManager {
   private let baseSearchUrl = "https://api.imgur.com/3/gallery/search"
   private let session = URLSession.shared
   
+  private var currentTask: URLSessionDataTask?
+  
+  static var shared = ImgManager()
+  
+  init() {  }
+  
   func findImages(with term: String, sort: Sort = .top, window: Window = .all, page: Int = 1, callback: @escaping (([Image]?) -> ())) {
     
     // url encode the search term
@@ -38,27 +44,45 @@ class ImgManager {
     var request = URLRequest(url: URL(string: url)!)
     request.addValue("Client-ID \(clientId)", forHTTPHeaderField: "Authorization")
     
+    // stop the current task, if there is one
+    if let _ = currentTask {
+      currentTask?.cancel()
+    }
+    
     // handle task response
-    let task = session.dataTask(with: request) { (data, response, error) in
+    currentTask = session.dataTask(with: request) { (data, response, error) in
       
       if let error = error {
+        let nsError = error as NSError
+        if nsError.code == NSURLErrorCancelled {
+          
+        } else {
+          
+        }
+        
         print("Problem with imgur request: \(error)")
         callback(nil)
         return
       }
       
+      print(String(data: data!, encoding: .utf8)!)
+      
       // parse and decode the json from the imgur response
-      guard let data = data, let imgurResponse = try? JSONDecoder().decode(ImgurResponse.self, from: data), let images = imgurResponse.data else {
+      guard let data = data, let imgurResponse = try? JSONDecoder().decode(ImgurResponse.self, from: data), let galleries = imgurResponse.data else {
         print("Problem parsing the response")
         callback(nil)
         return
       }
       
+      let images = galleries.reduce([Image](), { (r, gal) -> [Image] in
+        return r + (gal.images ?? [])
+      })
+      
       callback(images)
       
     }
     
-    task.resume()
+    currentTask?.resume()
     
   }
   

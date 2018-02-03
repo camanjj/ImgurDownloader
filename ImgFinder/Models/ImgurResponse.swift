@@ -1,5 +1,5 @@
 //
-//  Image.swift
+//  ImgurResponse.swift
 //  ImgFinder
 //
 //  Created by Cameron Jackson on 2/2/18.
@@ -7,12 +7,11 @@
 //
 
 import Foundation
-struct Image: Codable {
+
+struct ImgurResponse: Codable {
   
-  var id: String
-  var title: String
-  var description: String?
-  var link: String
-  var thumbnail: String?
+  var data: [Gallery]?
+  var status: Int
+  var success: Bool
   
 }
