@@ -12,7 +12,15 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    ImgManager().findImages(with: "cats") { (images) in
+      if let images = images {
+        print(images)
+      } else {
+        print("Error")
+      }
+    }
+    
   }
 
   override func didReceiveMemoryWarning() {

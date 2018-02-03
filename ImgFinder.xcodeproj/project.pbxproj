@@ -12,6 +12,9 @@
 		AD3E40EE20252DA00089415C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40EC20252DA00089415C /* Main.storyboard */; };
 		AD3E40F020252DA00089415C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40EF20252DA00089415C /* Assets.xcassets */; };
 		AD3E40F320252DA00089415C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40F120252DA00089415C /* LaunchScreen.storyboard */; };
+		AD3E40FB202533360089415C /* ImgurManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FA202533360089415C /* ImgurManager.swift */; };
+		AD3E40FD202536040089415C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FC202536040089415C /* Image.swift */; };
+		ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F182025481C00D4925B /* ImgurResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		AD3E40EF20252DA00089415C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD3E40F220252DA00089415C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD3E40F420252DA00089415C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AD3E40FA202533360089415C /* ImgurManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurManager.swift; sourceTree = "<group>"; };
+		AD3E40FC202536040089415C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		ADC50F182025481C00D4925B /* ImgurResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,9 @@
 				AD3E40EF20252DA00089415C /* Assets.xcassets */,
 				AD3E40F120252DA00089415C /* LaunchScreen.storyboard */,
 				AD3E40F420252DA00089415C /* Info.plist */,
+				AD3E40FA202533360089415C /* ImgurManager.swift */,
+				AD3E40FC202536040089415C /* Image.swift */,
+				ADC50F182025481C00D4925B /* ImgurResponse.swift */,
 			);
 			path = ImgFinder;
 			sourceTree = "<group>";
@@ -137,7 +146,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD3E40EB20252DA00089415C /* ViewController.swift in Sources */,
+				AD3E40FD202536040089415C /* Image.swift in Sources */,
+				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
 				AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */,
+				AD3E40FB202533360089415C /* ImgurManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
