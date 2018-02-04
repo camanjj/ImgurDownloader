@@ -12,13 +12,18 @@ protocol ImgurSearchViewModelDelegate: class {
   func updatedResults(for term: String)
 }
 
+enum FooterState {
+  // note: typing is only used as an initial state
+  case typing, loading, empty(String), results
+}
 
 class ImgurSearchViewModel {
   private var images: [Image]?
   private var currentPage = 1
-  private var currentTerm: String?
+  var currentTerm: String?
   
-  var hasMoreResults = true
+//  var hasMoreResults = true
+  var footerState: FooterState = .typing
   var resultsUpdated: ((String) -> ()) = { _ in }
   
   /// Fetches the first page for the text given
@@ -36,8 +41,8 @@ class ImgurSearchViewModel {
     
     // reset some vals
     self.currentTerm = text
-    self.hasMoreResults = true
-    self.images = nil
+    self.footerState = .loading
+//    self.images = nil
     self.resultsUpdated(text)
     
     
@@ -45,7 +50,8 @@ class ImgurSearchViewModel {
       if let images = images {
         
         DispatchQueue.main.async {
-          self.hasMoreResults = !images.isEmpty
+//          self.hasMoreResults = !images.isEmpty
+          self.footerState = images.isEmpty ? .empty(text) : .results
           self.images = images
           self.currentPage = 1
           self.resultsUpdated(self.currentTerm!)
@@ -62,7 +68,8 @@ class ImgurSearchViewModel {
     ImgManager.shared.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
       if let images = images {
         DispatchQueue.main.async {
-          self.hasMoreResults = !images.isEmpty
+//          self.hasMoreResults = !images.isEmpty
+          self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
           self.images! += images
           self.currentPage += 1
           self.resultsUpdated(self.currentTerm!)
@@ -72,11 +79,13 @@ class ImgurSearchViewModel {
     }
   }
 
-  func thumbnail(for indexPath: IndexPath) -> String? {
+  /// Gets the thumbnail link for the item at the specifed indexPath
+  func thumbnail(for indexPath: IndexPath) -> URL? {
     guard let images = images, indexPath.row < images.count else { return nil }
-    return images[indexPath.row].thumbnail
+    return URL(string: images[indexPath.row].thumbnail)
   }
   
+  /// Returns the numbers of results for the current term
   func numberOfImages() -> Int {
     return images?.count ?? 0
   }

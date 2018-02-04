@@ -40,11 +40,11 @@ class ImgurSearchController: UIViewController {
     
     // configure the search controller
     searchController = UISearchController(searchResultsController: imagesController)
-    searchController?.searchResultsUpdater = self
+//    searchController?.searchResultsUpdater = self
     searchController?.searchBar.placeholder = "Search for images"
     searchController?.hidesNavigationBarDuringPresentation = false
     navigationItem.titleView = searchController?.searchBar
-//    searchController?.searchBar.delegate = self
+    searchController?.searchBar.delegate = self
     
     self.definesPresentationContext = true
     
@@ -78,8 +78,8 @@ extension ImgurSearchController: UICollectionViewDataSource {
     cell.imageView.kf.indicatorType = .activity
     
     // load the thumbnail if valid
-    if let link = viewModel.thumbnail(for: indexPath), let url = URL(string: link) {
-      cell.imageView.kf.setImage(with: ImageResource(downloadURL: url))
+    if let link = viewModel.thumbnail(for: indexPath) {
+      cell.imageView.kf.setImage(with: ImageResource(downloadURL: link))
     }
     
     return cell
@@ -91,13 +91,19 @@ extension ImgurSearchController: UICollectionViewDataSource {
     let view: SearchFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! SearchFooterView
     
     // configure the footer based on if there are more results or not
-    view.label.isHidden = viewModel.hasMoreResults
-    if viewModel.hasMoreResults {
-      view.activityView.startAnimating()
-    } else {
+    switch viewModel.footerState {
+    case .typing:
+      view.label.isHidden = true
       view.activityView.stopAnimating()
+    case .loading, .results:
+      view.label.isHidden = true
+      view.activityView.startAnimating()
+    case .empty(let term):
+      view.label.text = "No more results for \(term)"
+      view.activityView.stopAnimating()
+      
     }
-    
+
     return view
     
   }
@@ -131,5 +137,9 @@ extension ImgurSearchController: UISearchBarDelegate {
   
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     viewModel.findImages(for: searchBar.text)
+  }
+  
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    
   }
 }
