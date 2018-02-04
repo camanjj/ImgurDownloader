@@ -11,47 +11,65 @@ import Kingfisher
 
 class ImgurSearchController: UIViewController {
 
+  @IBOutlet weak var historyTableView: UITableView!
   @IBOutlet weak var searchButton: UIButton!
   var searchController: UISearchController?
   var imagesController: UICollectionViewController?
   let cellId = "ImageCell"
+  let historyId = "HistoryCell"
   
   let viewModel = ImgurSearchViewModel()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // create and config the collection view for the images
-    let collectionViewLayout = UICollectionViewFlowLayout()
-    let imagesController = UICollectionViewController(collectionViewLayout: collectionViewLayout)
-    imagesController.collectionView?.backgroundColor = .white
-    imagesController.collectionView?.dataSource = self
-    imagesController.collectionView?.delegate = self
-//    imagesController.collectionView?.prefetchDataSource = self
-    
-    // register the cells
-    let nib = UINib(nibName: "ImageCell", bundle: nil)
-    imagesController.collectionView?.register(nib, forCellWithReuseIdentifier: cellId)
-    
-    let footerNib = UINib(nibName: "SearchFooterView", bundle: nil)
-    imagesController.collectionView?.register(footerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footer")
-    
-    self.imagesController = imagesController
-    
-    // configure the search controller
-    searchController = UISearchController(searchResultsController: imagesController)
-//    searchController?.searchResultsUpdater = self
-    searchController?.searchBar.placeholder = "Search for images"
-    searchController?.hidesNavigationBarDuringPresentation = false
-    navigationItem.titleView = searchController?.searchBar
-    searchController?.searchBar.delegate = self
+    configureCollectionView()
+    configureSearchController()
+    configureTableView()
     
     self.definesPresentationContext = true
     
+    // keep track when the search results have changed
     viewModel.resultsUpdated = { [unowned self] term in
       self.imagesController?.collectionView?.reloadData()
     }
     
+    // keep trac when the history has been changed
+    viewModel.historyUpdated = { [unowned self] in
+      self.historyTableView.reloadData()
+    }
+    
+  }
+  
+  func configureCollectionView() {
+    // create and config the collection view for the images
+    let collectionViewLayout = UICollectionViewFlowLayout()
+    imagesController = UICollectionViewController(collectionViewLayout: collectionViewLayout)
+    imagesController?.collectionView?.backgroundColor = .white
+    imagesController?.collectionView?.dataSource = self
+    imagesController?.collectionView?.delegate = self
+    
+    // register the cells/views for the collection view
+    let nib = UINib(nibName: "ImageCell", bundle: nil)
+    imagesController?.collectionView?.register(nib, forCellWithReuseIdentifier: cellId)
+    
+    let footerNib = UINib(nibName: "SearchFooterView", bundle: nil)
+    imagesController?.collectionView?.register(footerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footer")
+  }
+  
+  func configureSearchController() {
+    // configure the search controller
+    searchController = UISearchController(searchResultsController: imagesController)
+    //    searchController?.searchResultsUpdater = self // only pay attention to when the search button is selected
+    searchController?.searchBar.placeholder = "Search for images"
+    searchController?.hidesNavigationBarDuringPresentation = false
+    navigationItem.titleView = searchController?.searchBar
+    searchController?.searchBar.delegate = self
+  }
+  
+  func configureTableView() {
+    historyTableView.dataSource = self
+    historyTableView.delegate = self
   }
   
   override func didReceiveMemoryWarning() {
@@ -90,7 +108,7 @@ extension ImgurSearchController: UICollectionViewDataSource {
     
     let view: SearchFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! SearchFooterView
     
-    // configure the footer based on if there are more results or not
+    // configure the footer based on the state
     switch viewModel.footerState {
     case .typing:
       view.label.isHidden = true
@@ -142,4 +160,32 @@ extension ImgurSearchController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     
   }
+}
+
+extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return viewModel.numberOfHistoryItems()
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    var cell = tableView.dequeueReusableCell(withIdentifier: historyId)
+    if cell == nil {
+      cell = UITableViewCell(style: .default, reuseIdentifier: historyId)
+    }
+    
+    cell?.textLabel?.text = viewModel.historyText(at: indexPath)
+    
+    return cell!
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    // load the text from the history item and search for it
+    let text = viewModel.historyText(at: indexPath)
+    searchController?.searchBar.becomeFirstResponder()
+    searchController?.searchBar.text = text
+    viewModel.findImages(for: text)
+  }
+  
 }

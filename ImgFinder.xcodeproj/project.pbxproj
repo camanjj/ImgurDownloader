@@ -21,6 +21,8 @@
 		ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */; };
 		ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F262026738900D4925B /* SearchFooterView.swift */; };
 		ADC50F292026738900D4925B /* SearchFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F272026738900D4925B /* SearchFooterView.xib */; };
+		ADDDB2002026EAEE0077D826 /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */; };
+		ADDDB202202786E70077D826 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDDB201202786E70077D826 /* HistoryManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurSearchViewModel.swift; sourceTree = "<group>"; };
 		ADC50F262026738900D4925B /* SearchFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooterView.swift; sourceTree = "<group>"; };
 		ADC50F272026738900D4925B /* SearchFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchFooterView.xib; sourceTree = "<group>"; };
+		ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
+		ADDDB201202786E70077D826 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
 		C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImgFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,6 +99,7 @@
 				AD3E40FA202533360089415C /* ImgurManager.swift */,
 				ADC50F1A202564C400D4925B /* Models */,
 				ADC50F212026696300D4925B /* Cells */,
+				ADDDB201202786E70077D826 /* HistoryManager.swift */,
 			);
 			path = ImgFinder;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 			children = (
 				AD3E40FC202536040089415C /* Image.swift */,
 				ADC50F182025481C00D4925B /* ImgurResponse.swift */,
+				ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -261,7 +267,9 @@
 			files = (
 				AD3E40EB20252DA00089415C /* ImgurSearchController.swift in Sources */,
 				ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */,
+				ADDDB2002026EAEE0077D826 /* HistoryItem.swift in Sources */,
 				AD3E40FD202536040089415C /* Image.swift in Sources */,
+				ADDDB202202786E70077D826 /* HistoryManager.swift in Sources */,
 				ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
 				AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */,

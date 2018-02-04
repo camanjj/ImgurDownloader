@@ -17,7 +17,7 @@ enum Window: String {
 }
 
 /// Class that handles sendng request to the
-class ImgManager {
+class ImgurManager {
   
   private let clientId = "0bcf852c1d22f46"
   private let baseSearchUrl = "https://api.imgur.com/3/gallery/search"
@@ -25,7 +25,7 @@ class ImgManager {
   
   private var currentTask: URLSessionDataTask?
   
-  static var shared = ImgManager()
+//  static var shared = ImgManager()
   
   init() {  }
   
@@ -52,34 +52,31 @@ class ImgManager {
     // handle task response
     currentTask = session.dataTask(with: request) { (data, response, error) in
       
+      var images: [Image]? = nil
+      
       if let error = error {
         let nsError = error as NSError
         if nsError.code == NSURLErrorCancelled {
-          
+          // the request was cancelleds
         } else {
-          
+          // another type of error has occured
         }
         
         print("Problem with imgur request: \(error)")
-        callback(nil)
-        return
+      } else if let data = data, let imgurResponse = try? JSONDecoder().decode(ImgurResponse.self, from: data), let galleries = imgurResponse.data {
+        images = galleries.reduce([Image](), { (r, gal) -> [Image] in
+          return r + (gal.images ?? [])
+        })
+      } else {
+        // error parsing response
       }
       
       print(String(data: data!, encoding: .utf8)!)
       
-      // parse and decode the json from the imgur response
-      guard let data = data, let imgurResponse = try? JSONDecoder().decode(ImgurResponse.self, from: data), let galleries = imgurResponse.data else {
-        print("Problem parsing the response")
-        callback(nil)
-        return
+      // make sure the callback is on the main thread
+      DispatchQueue.main.async {
+        callback(images)
       }
-      
-      let images = galleries.reduce([Image](), { (r, gal) -> [Image] in
-        return r + (gal.images ?? [])
-      })
-      
-      callback(images)
-      
     }
     
     currentTask?.resume()

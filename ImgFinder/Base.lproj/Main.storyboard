@@ -22,15 +22,26 @@
                                 <rect key="frame" x="79" y="318" width="217" height="30"/>
                                 <state key="normal" title="Tap here to search for an image"/>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-DZ-Xib">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="r8a-qs-aij" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2H1-xD-N0Q"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xi4-DZ-Xib" secondAttribute="bottom" id="Eef-IR-ss4"/>
+                            <constraint firstItem="xi4-DZ-Xib" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="KyP-bL-4l6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xi4-DZ-Xib" secondAttribute="trailing" id="VaY-p2-bLO"/>
+                            <constraint firstItem="xi4-DZ-Xib" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nr9-4O-LCb"/>
                             <constraint firstItem="r8a-qs-aij" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="tWH-3l-D77"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="LXz-ky-XTN"/>
+                    <connections>
+                        <outlet property="historyTableView" destination="xi4-DZ-Xib" id="Da6-y7-y2A"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

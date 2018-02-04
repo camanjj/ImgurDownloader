@@ -20,11 +20,15 @@ enum FooterState {
 class ImgurSearchViewModel {
   private var images: [Image]?
   private var currentPage = 1
-  var currentTerm: String?
+  private var currentTerm: String?
   
-//  var hasMoreResults = true
+  // managers
+  private var imgurManager = ImgurManager()
+  private var historyManager = HistoryManager()
+  
   var footerState: FooterState = .typing
-  var resultsUpdated: ((String) -> ()) = { _ in }
+  var resultsUpdated: ((String) -> ()) = { _ in } // search results update block
+  var historyUpdated: (() -> ()) = { } // history update block
   
   /// Fetches the first page for the text given
   func findImages(for text: String?) {
@@ -39,24 +43,21 @@ class ImgurSearchViewModel {
       return
     }
     
+    // handle history
+    historyManager.add(item: HistoryItem(term: text, timestamp: Date().timeIntervalSince1970))
+    historyUpdated()
+    
     // reset some vals
     self.currentTerm = text
     self.footerState = .loading
-//    self.images = nil
     self.resultsUpdated(text)
     
-    
-    ImgManager.shared.findImages(with: text) { (images) in
+    imgurManager.findImages(with: text) { (images) in
       if let images = images {
-        
-        DispatchQueue.main.async {
-//          self.hasMoreResults = !images.isEmpty
-          self.footerState = images.isEmpty ? .empty(text) : .results
-          self.images = images
-          self.currentPage = 1
-          self.resultsUpdated(self.currentTerm!)
-        }
-        
+        self.footerState = images.isEmpty ? .empty(text) : .results
+        self.images = images
+        self.currentPage = 1
+        self.resultsUpdated(self.currentTerm!)
       }
     }
     
@@ -65,16 +66,12 @@ class ImgurSearchViewModel {
   /// Fetches the images for the next page for the current search term
   func fetchNextPage() {
     
-    ImgManager.shared.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
+    imgurManager.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
       if let images = images {
-        DispatchQueue.main.async {
-//          self.hasMoreResults = !images.isEmpty
-          self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
-          self.images! += images
-          self.currentPage += 1
-          self.resultsUpdated(self.currentTerm!)
-        }
-        
+        self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
+        self.images! += images
+        self.currentPage += 1
+        self.resultsUpdated(self.currentTerm!)
       }
     }
   }
@@ -89,5 +86,15 @@ class ImgurSearchViewModel {
   func numberOfImages() -> Int {
     return images?.count ?? 0
   }
+  
+  //MARK: TableView datasource
+  func historyText(at indexPath: IndexPath) -> String {
+    return historyManager.history[indexPath.row].term
+  }
+  
+  func numberOfHistoryItems() -> Int {
+    return historyManager.history.count
+  }
+  
 }
 
