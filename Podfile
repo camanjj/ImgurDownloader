@@ -7,4 +7,5 @@ target 'ImgFinder' do
 
   # Pods for ImgFinder
   pod 'Kingfisher', '~> 4.0'
+  pod 'SKPhotoBrowser'
 end

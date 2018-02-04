@@ -1,12 +1,15 @@
 PODS:
   - Kingfisher (4.6.1)
+  - SKPhotoBrowser (5.0.3)
 
 DEPENDENCIES:
   - Kingfisher (~> 4.0)
+  - SKPhotoBrowser
 
 SPEC CHECKSUMS:
   Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
+  SKPhotoBrowser: 6de77f7004442e79059f19d86e2e7e6a03b43a13
 
-PODFILE CHECKSUM: c0f47fc3bb979ffd4e24c562eb89fa84e7ce738f
+PODFILE CHECKSUM: 3cc88583edb9c67dc3af320be72bb6b17beb25a8
 
 COCOAPODS: 1.3.1

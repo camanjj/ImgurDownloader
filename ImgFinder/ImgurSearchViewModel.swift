@@ -50,6 +50,7 @@ class ImgurSearchViewModel {
     // reset some vals
     self.currentTerm = text
     self.footerState = .loading
+    self.images = []
     self.resultsUpdated(text)
     
     imgurManager.findImages(with: text) { (images) in
@@ -80,6 +81,11 @@ class ImgurSearchViewModel {
   func thumbnail(for indexPath: IndexPath) -> URL? {
     guard let images = images, indexPath.row < images.count else { return nil }
     return URL(string: images[indexPath.row].thumbnail)
+  }
+  
+  func imageLink(for indexPath: IndexPath) -> String? {
+    guard let images = images, indexPath.row < images.count else { return nil }
+    return images[indexPath.row].link
   }
   
   /// Returns the numbers of results for the current term

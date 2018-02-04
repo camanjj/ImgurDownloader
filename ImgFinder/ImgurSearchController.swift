@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import SKPhotoBrowser
 
 class ImgurSearchController: UIViewController {
 
@@ -45,7 +46,7 @@ class ImgurSearchController: UIViewController {
     // create and config the collection view for the images
     let collectionViewLayout = UICollectionViewFlowLayout()
     imagesController = UICollectionViewController(collectionViewLayout: collectionViewLayout)
-    imagesController?.collectionView?.backgroundColor = .white
+    imagesController?.collectionView?.backgroundColor = .black
     imagesController?.collectionView?.dataSource = self
     imagesController?.collectionView?.delegate = self
     
@@ -148,6 +149,26 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
     if indexPath.row == viewModel.numberOfImages() - 1 {
       viewModel.fetchNextPage()
     }
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+    // present the image for panning and zooming
+    guard let link = viewModel.imageLink(for: indexPath) else { return }
+    let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
+    let photo = SKPhoto.photoWithImageURL(link)
+    
+    // workaround for the issue of having a nil imageView.image b/c ?? UIImage() caused crash
+    let browser: SKPhotoBrowser
+    if let originImage = cell.imageView.image {
+        browser = SKPhotoBrowser(originImage: originImage, photos: [photo], animatedFromView: cell)
+    } else {
+      browser = SKPhotoBrowser(photos: [photo])
+    }
+    
+    browser.initializePageIndex(0)
+    present(browser, animated: true, completion: {})
+    
   }
 }
 
