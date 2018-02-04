@@ -29,8 +29,12 @@ class ImgurSearchController: UIViewController {
     imagesController.collectionView?.delegate = self
 //    imagesController.collectionView?.prefetchDataSource = self
     
+    // register the cells
     let nib = UINib(nibName: "ImageCell", bundle: nil)
     imagesController.collectionView?.register(nib, forCellWithReuseIdentifier: cellId)
+    
+    let footerNib = UINib(nibName: "SearchFooterView", bundle: nil)
+    imagesController.collectionView?.register(footerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footer")
     
     self.imagesController = imagesController
     
@@ -40,6 +44,7 @@ class ImgurSearchController: UIViewController {
     searchController?.searchBar.placeholder = "Search for images"
     searchController?.hidesNavigationBarDuringPresentation = false
     navigationItem.titleView = searchController?.searchBar
+//    searchController?.searchBar.delegate = self
     
     self.definesPresentationContext = true
     
@@ -80,6 +85,22 @@ extension ImgurSearchController: UICollectionViewDataSource {
     return cell
     
   }
+  
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    
+    let view: SearchFooterView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath) as! SearchFooterView
+    
+    // configure the footer based on if there are more results or not
+    view.label.isHidden = viewModel.hasMoreResults
+    if viewModel.hasMoreResults {
+      view.activityView.startAnimating()
+    } else {
+      view.activityView.stopAnimating()
+    }
+    
+    return view
+    
+  }
 }
 
 extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
@@ -90,15 +111,25 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
     return CGSize(width: size, height: size)
   }
   
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    return CGSize(width: collectionView.frame.width, height: 80)
+  }
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets.zero
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    // load more rows when we get to the last row
     if indexPath.row == viewModel.numberOfImages() - 1 {
-      // TODO: load more rows
       viewModel.fetchNextPage()
     }
-    
+  }
+}
+
+extension ImgurSearchController: UISearchBarDelegate {
+  
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    viewModel.findImages(for: searchBar.text)
   }
 }

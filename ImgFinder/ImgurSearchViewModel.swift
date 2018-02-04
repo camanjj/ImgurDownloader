@@ -12,17 +12,20 @@ protocol ImgurSearchViewModelDelegate: class {
   func updatedResults(for term: String)
 }
 
+
 class ImgurSearchViewModel {
   private var images: [Image]?
   private var currentPage = 1
   private var currentTerm: String?
   
+  var hasMoreResults = true
   var resultsUpdated: ((String) -> ()) = { _ in }
   
+  /// Fetches the first page for the text given
   func findImages(for text: String?) {
     
     // only automatic search when there are more than 3 characters in the searchbar
-    guard let text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), text.count > 3 else {
+    guard let text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
       return
     }
     
@@ -31,16 +34,21 @@ class ImgurSearchViewModel {
       return
     }
     
-    currentTerm = text
+    // reset some vals
+    self.currentTerm = text
+    self.hasMoreResults = true
+    self.images = nil
+    self.resultsUpdated(text)
+    
     
     ImgManager.shared.findImages(with: text) { (images) in
       if let images = images {
         
         DispatchQueue.main.async {
+          self.hasMoreResults = !images.isEmpty
           self.images = images
           self.currentPage = 1
           self.resultsUpdated(self.currentTerm!)
-//          self.delegate?.fetched(images: images, for: self.currentTerm!)
         }
         
       }
@@ -48,15 +56,16 @@ class ImgurSearchViewModel {
     
   }
 
+  /// Fetches the images for the next page for the current search term
   func fetchNextPage() {
     
     ImgManager.shared.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
       if let images = images {
         DispatchQueue.main.async {
+          self.hasMoreResults = !images.isEmpty
           self.images! += images
           self.currentPage += 1
           self.resultsUpdated(self.currentTerm!)
-//          self.delegate?.fetched(images: self.images!, for: self.currentTerm!)
         }
         
       }

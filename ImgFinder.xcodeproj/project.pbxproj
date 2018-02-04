@@ -19,6 +19,8 @@
 		ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1B2025716900D4925B /* ImageCell.swift */; };
 		ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F1C2025716900D4925B /* ImageCell.xib */; };
 		ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */; };
+		ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F262026738900D4925B /* SearchFooterView.swift */; };
+		ADC50F292026738900D4925B /* SearchFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F272026738900D4925B /* SearchFooterView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		ADC50F1B2025716900D4925B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		ADC50F1C2025716900D4925B /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurSearchViewModel.swift; sourceTree = "<group>"; };
+		ADC50F262026738900D4925B /* SearchFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooterView.swift; sourceTree = "<group>"; };
+		ADC50F272026738900D4925B /* SearchFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchFooterView.xib; sourceTree = "<group>"; };
 		C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImgFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,8 +94,7 @@
 				AD3E40F420252DA00089415C /* Info.plist */,
 				AD3E40FA202533360089415C /* ImgurManager.swift */,
 				ADC50F1A202564C400D4925B /* Models */,
-				ADC50F1B2025716900D4925B /* ImageCell.swift */,
-				ADC50F1C2025716900D4925B /* ImageCell.xib */,
+				ADC50F212026696300D4925B /* Cells */,
 			);
 			path = ImgFinder;
 			sourceTree = "<group>";
@@ -103,6 +106,17 @@
 				ADC50F182025481C00D4925B /* ImgurResponse.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		ADC50F212026696300D4925B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				ADC50F1B2025716900D4925B /* ImageCell.swift */,
+				ADC50F1C2025716900D4925B /* ImageCell.xib */,
+				ADC50F262026738900D4925B /* SearchFooterView.swift */,
+				ADC50F272026738900D4925B /* SearchFooterView.xib */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F0738F511441C565EE5F3A89 /* Pods */ = {
@@ -179,6 +193,7 @@
 				AD3E40F320252DA00089415C /* LaunchScreen.storyboard in Resources */,
 				ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */,
 				AD3E40F020252DA00089415C /* Assets.xcassets in Resources */,
+				ADC50F292026738900D4925B /* SearchFooterView.xib in Resources */,
 				AD3E40EE20252DA00089415C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD3E40EB20252DA00089415C /* ImgurSearchController.swift in Sources */,
+				ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */,
 				AD3E40FD202536040089415C /* Image.swift in Sources */,
 				ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
