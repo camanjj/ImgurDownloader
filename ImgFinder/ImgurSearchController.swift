@@ -24,6 +24,9 @@ class ImgurSearchController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    searchButton.titleLabel?.numberOfLines = 0
+    searchButton.titleLabel?.textAlignment = .center
+    
     configureCollectionView()
     configureSearchController()
     configureTableView()
@@ -35,11 +38,14 @@ class ImgurSearchController: UIViewController {
       self.imagesController?.collectionView?.reloadData()
     }
     
-    // keep trac when the history has been changed
+    // keep track when the history has been changed
     viewModel.historyUpdated = { [unowned self] in
+      self.toggleTableView()
       self.historyTableView.reloadData()
     }
     
+    // decide to show or hide the table view
+    toggleTableView()
   }
   
   func configureCollectionView() {
@@ -71,6 +77,18 @@ class ImgurSearchController: UIViewController {
   func configureTableView() {
     historyTableView.dataSource = self
     historyTableView.delegate = self
+  }
+  
+  func toggleTableView() {
+    if viewModel.numberOfHistoryItems() == 0 {
+      historyTableView.isHidden = true
+    } else {
+      historyTableView.isHidden = false
+    }
+  }
+  
+  @IBAction func getStartedClick(_ sender: Any) {
+    searchController?.searchBar.becomeFirstResponder()
   }
   
   override func didReceiveMemoryWarning() {

@@ -18,11 +18,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r8a-qs-aij">
-                                <rect key="frame" x="79" y="318" width="217" height="30"/>
-                                <state key="normal" title="Tap here to search for an image"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8a-qs-aij">
+                                <rect key="frame" x="8" y="293.5" width="359" height="80"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle">
+                                        <fragment>
+                                            <string key="content">Welcome to ImgFinder where we can find images that suit your needs. 
+
+Tap here to get started searching</string>
+                                            <attributes>
+                                                <color key="NSColor" red="1" green="0.42352941179999998" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <font key="NSFont" metaFont="system" size="19"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                </state>
+                                <connections>
+                                    <action selector="getStartedClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Q4I-cd-nX7"/>
+                                </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-DZ-Xib">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xi4-DZ-Xib">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
@@ -31,9 +47,11 @@
                         <constraints>
                             <constraint firstItem="r8a-qs-aij" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2H1-xD-N0Q"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="xi4-DZ-Xib" secondAttribute="bottom" id="Eef-IR-ss4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="r8a-qs-aij" secondAttribute="trailing" constant="8" id="Iyd-Dq-V1X"/>
                             <constraint firstItem="xi4-DZ-Xib" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="KyP-bL-4l6"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xi4-DZ-Xib" secondAttribute="trailing" id="VaY-p2-bLO"/>
                             <constraint firstItem="xi4-DZ-Xib" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nr9-4O-LCb"/>
+                            <constraint firstItem="r8a-qs-aij" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="t64-0F-WJF"/>
                             <constraint firstItem="r8a-qs-aij" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="tWH-3l-D77"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -41,6 +59,7 @@
                     <navigationItem key="navigationItem" id="LXz-ky-XTN"/>
                     <connections>
                         <outlet property="historyTableView" destination="xi4-DZ-Xib" id="Da6-y7-y2A"/>
+                        <outlet property="searchButton" destination="r8a-qs-aij" id="u46-ZQ-Yq0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
