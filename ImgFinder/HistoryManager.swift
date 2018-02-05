@@ -38,6 +38,13 @@ class HistoryManager {
     saveHistory()
   }
   
+  func remove(at index: Int) {
+    if index < history.count {
+      history.remove(at: index)
+      saveHistory()
+    }
+  }
+  
   /// saves the history to a file
   private func saveHistory() {
     if let jsonData = try? JSONEncoder().encode(history), let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {

@@ -48,8 +48,8 @@ class ImgurSearchController: UIViewController {
     toggleTableView()
   }
   
+  /// create and config the collection view for the images
   func configureCollectionView() {
-    // create and config the collection view for the images
     let collectionViewLayout = UICollectionViewFlowLayout()
     imagesController = UICollectionViewController(collectionViewLayout: collectionViewLayout)
     imagesController?.collectionView?.backgroundColor = .black
@@ -64,21 +64,23 @@ class ImgurSearchController: UIViewController {
     imagesController?.collectionView?.register(footerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footer")
   }
   
+  /// configure the search controller
   func configureSearchController() {
-    // configure the search controller
     searchController = UISearchController(searchResultsController: imagesController)
-    //    searchController?.searchResultsUpdater = self // only pay attention to when the search button is selected
     searchController?.searchBar.placeholder = "Search for images"
     searchController?.hidesNavigationBarDuringPresentation = false
     navigationItem.titleView = searchController?.searchBar
     searchController?.searchBar.delegate = self
   }
   
+  /// configure the history table view
   func configureTableView() {
     historyTableView.dataSource = self
     historyTableView.delegate = self
+    historyTableView.allowsSelectionDuringEditing = false
   }
   
+  /// show/hide the table view based on the history
   func toggleTableView() {
     if viewModel.numberOfHistoryItems() == 0 {
       historyTableView.isHidden = true
@@ -95,13 +97,6 @@ class ImgurSearchController: UIViewController {
     super.didReceiveMemoryWarning()
   }
 
-}
-
-extension ImgurSearchController: UISearchResultsUpdating {
-  
-  func updateSearchResults(for searchController: UISearchController) {
-    viewModel.findImages(for: searchController.searchBar.text)
-  }
 }
 
 extension ImgurSearchController: UICollectionViewDataSource {
@@ -144,7 +139,6 @@ extension ImgurSearchController: UICollectionViewDataSource {
     }
 
     return view
-    
   }
 }
 
@@ -165,8 +159,8 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    // load more rows when we get to the last row
-    if indexPath.row == viewModel.numberOfImages() - 1 {
+    // load more rows when we get to the 8th last row
+    if indexPath.row == viewModel.numberOfImages() - 8 {
       viewModel.fetchNextPage()
     }
   }
@@ -216,7 +210,6 @@ extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
     }
     
     cell?.textLabel?.text = viewModel.historyText(at: indexPath)
-    
     return cell!
   }
   
@@ -230,7 +223,21 @@ extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
     let text = viewModel.historyText(at: indexPath)
     searchController?.searchBar.becomeFirstResponder()
     searchController?.searchBar.text = text
-    viewModel.findImages(for: text)
+    
+  }
+  
+  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    return true
+  }
+
+  func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    
+    // add the action to delete the speciic history item
+    let removeAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+      self.viewModel.removeHistoryItem(at: indexPath)
+      tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    return [removeAction]
   }
   
 }

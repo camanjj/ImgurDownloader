@@ -115,5 +115,9 @@ class ImgurSearchViewModel {
     return historyManager.history.count
   }
   
+  func removeHistoryItem(at indexPath: IndexPath) {
+    historyManager.remove(at: indexPath.row)
+  }
+  
 }
 
