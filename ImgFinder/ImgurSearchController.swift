@@ -78,6 +78,14 @@ class ImgurSearchController: UIViewController {
     historyTableView.dataSource = self
     historyTableView.delegate = self
     historyTableView.allowsSelectionDuringEditing = false
+    let footerLabel = UILabel()
+    footerLabel.textAlignment = .center
+    footerLabel.text = "\nSwipe left to delete previous search entry"
+    footerLabel.numberOfLines = 0
+    footerLabel.textColor = .lightGray
+    footerLabel.font = UIFont.systemFont(ofSize: 12)
+    historyTableView.tableFooterView = footerLabel
+    footerLabel.sizeToFit()
   }
   
   /// show/hide the table view based on the history
@@ -92,11 +100,6 @@ class ImgurSearchController: UIViewController {
   @IBAction func getStartedClick(_ sender: Any) {
     searchController?.searchBar.becomeFirstResponder()
   }
-  
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-  }
-
 }
 
 extension ImgurSearchController: UICollectionViewDataSource {
@@ -236,6 +239,7 @@ extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
     let removeAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
       self.viewModel.removeHistoryItem(at: indexPath)
       tableView.deleteRows(at: [indexPath], with: .automatic)
+      self.toggleTableView()
     }
     return [removeAction]
   }
