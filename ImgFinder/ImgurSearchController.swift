@@ -130,13 +130,15 @@ extension ImgurSearchController: UICollectionViewDataSource {
     // configure the footer based on the state
     switch viewModel.footerState {
     case .typing:
-      view.label.isHidden = true
+      view.label.isHidden = false
+      view.label.text = "Click Search to find images"
       view.activityView.stopAnimating()
     case .loading, .results:
       view.label.isHidden = true
       view.activityView.startAnimating()
     case .empty(let term):
       view.label.text = "No more results for \(term)"
+      view.label.isHidden = false
       view.activityView.stopAnimating()
       
     }
