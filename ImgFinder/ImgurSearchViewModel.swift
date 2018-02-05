@@ -100,6 +100,12 @@ class ImgurSearchViewModel {
     return images?.count ?? 0
   }
   
+  func clearResults() {
+    images = []
+    footerState = .typing
+    resultsUpdated("")
+  }
+  
   //MARK: TableView datasource
   func historyText(at indexPath: IndexPath) -> String {
     return historyManager.history[indexPath.row].term

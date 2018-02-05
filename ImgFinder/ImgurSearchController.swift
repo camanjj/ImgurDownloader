@@ -199,7 +199,7 @@ extension ImgurSearchController: UISearchBarDelegate {
   }
   
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-    
+    viewModel.clearResults()
   }
 }
 
