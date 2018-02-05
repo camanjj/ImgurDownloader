@@ -220,6 +220,10 @@ extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
     return cell!
   }
   
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    return viewModel.numberOfHistoryItems() == 0 ? nil : "Search History"
+  }
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
     // load the text from the history item and search for it
