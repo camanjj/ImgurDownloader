@@ -67,6 +67,13 @@ class ImgurSearchViewModel {
   /// Fetches the images for the next page for the current search term
   func fetchNextPage() {
     
+    // if there are no more results do not attemp to get more pages
+    switch footerState {
+    case .empty(_):
+      return
+    default: break
+    }
+    
     imgurManager.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
       if let images = images {
         self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
