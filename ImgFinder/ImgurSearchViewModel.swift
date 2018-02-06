@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol ImgurSearchViewModelDelegate: class {
-  func updatedResults(for term: String)
-}
-
 enum FooterState {
   // note: typing is only used as an initial state
   case typing, loading, empty(String), results
@@ -55,7 +51,7 @@ class ImgurSearchViewModel {
   /// Fetches the images for the next page for the current search term
   func fetchNextPage() {
     
-    // if there are no more results do not attemp to get more pages
+    // if there are no more results do not attempt to get more pages
     switch footerState {
     case .empty(_):
       return
@@ -65,13 +61,15 @@ class ImgurSearchViewModel {
     fetchImages(currentTerm ?? "", currentPage+1)
   }
   
+  
+  /// Handles sending the request to imgur
   private func fetchImages(_ text: String, _ page: Int) {
     
-    imgurManager.findImages(with: text, page: currentPage+1) { (result) in
+    imgurManager.findImages(with: text, page: page) { (result) in
       
       switch result {
       case .success(let images):
-        self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
+        self.footerState = images.isEmpty ? .empty(text) : .results
         self.currentPage = page
         
         self.addTextToHistory(text)
@@ -80,7 +78,7 @@ class ImgurSearchViewModel {
         if page == 1 {
           self.images = images
         } else {
-          self.images! += images
+          self.images = (self.images ?? []) + images
         }
         
         self.resultsUpdated(text)
@@ -135,7 +133,6 @@ class ImgurSearchViewModel {
   func historyText(at indexPath: IndexPath) -> String {
     let item = historyManager.history.object(at: indexPath.row) as? HistoryItem
     return item?.term ?? ""
-    
   }
   
   func numberOfHistoryItems() -> Int {
@@ -147,4 +144,3 @@ class ImgurSearchViewModel {
   }
   
 }
-
