@@ -207,7 +207,7 @@ extension ImgurSearchController: UISearchResultsUpdating {
     
     // add a deley for searching to allow typing w/o searching for every term in between
     NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(startSearch), object: nil)
-    self.perform(#selector(startSearch), with: nil, afterDelay: 0.5)
+    self.perform(#selector(startSearch), with: nil, afterDelay: 0.65)
   }
 }
 
