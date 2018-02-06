@@ -7,9 +7,19 @@
 //
 
 import Foundation
-struct HistoryItem: Codable {
+struct HistoryItem: Codable, Hashable {
   
   var term: String
   var timestamp: TimeInterval
+
+  var hashValue: Int {
+    return term.lowercased().hashValue
+  }
   
 }
+
+
+func ==(lhs: HistoryItem, rhs: HistoryItem) -> Bool {
+  return lhs.term.lowercased() == rhs.term.lowercased()
+}
+
