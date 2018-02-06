@@ -16,6 +16,12 @@ enum Window: String {
   case all, day, week, month, year
 }
 
+enum ImgurResult {
+  case success([Image])
+  case cancelled
+  case error(Error?)
+}
+
 /// Class that handles sendng request to the
 class ImgurManager {
   
@@ -25,15 +31,11 @@ class ImgurManager {
   
   private var currentTask: URLSessionDataTask?
   
-//  static var shared = ImgManager()
-  
-  init() {  }
-  
-  func findImages(with term: String, sort: Sort = .top, window: Window = .all, page: Int = 1, callback: @escaping (([Image]?) -> ())) {
+  func findImages(with term: String, sort: Sort = .top, window: Window = .all, page: Int = 1, callback: @escaping ((ImgurResult) -> ())) {
     
     // url encode the search term
     guard let escapedTerm = term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
-      callback(nil)
+      callback(.error(nil))
       return
     }
     
@@ -52,30 +54,40 @@ class ImgurManager {
     // handle task response
     currentTask = session.dataTask(with: request) { (data, response, error) in
       
-      var images: [Image]? = nil
+      var result: ImgurResult
       
       if let error = error {
         let nsError = error as NSError
         if nsError.code == NSURLErrorCancelled {
           // the request was cancelleds
+          result = .cancelled
+          print("Cancelled request")
         } else {
           // another type of error has occured
+          result = .error(error)
+          print("Problem with imgur request: \(error)")
         }
         
-        print("Problem with imgur request: \(error)")
+        
       } else if let data = data, let imgurResponse = try? JSONDecoder().decode(ImgurResponse.self, from: data), let galleries = imgurResponse.data {
-        images = galleries.reduce([Image](), { (r, gal) -> [Image] in
+        // get the images from the galleries
+        let images = galleries.reduce([Image](), { (r, gal) -> [Image] in
           return r + (gal.images ?? [])
         })
+        result = .success(images)
+        print(String(data: data, encoding: .utf8)!)
       } else {
         // error parsing response
+        result = .error(nil)
+        print("Error parsing response")
       }
       
-      print(String(data: data!, encoding: .utf8)!)
+      // debug line
+//      print(String(data: data!, encoding: .utf8)!)
       
       // make sure the callback is on the main thread
       DispatchQueue.main.async {
-        callback(images)
+        callback(result)
       }
     }
     
