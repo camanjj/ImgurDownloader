@@ -71,6 +71,8 @@ class ImgurSearchController: UIViewController {
     searchController?.hidesNavigationBarDuringPresentation = false
     navigationItem.titleView = searchController?.searchBar
     searchController?.searchBar.delegate = self
+    searchController?.searchResultsUpdater = self
+    searchController?.searchBar.returnKeyType = .done
   }
   
   /// configure the history table view
@@ -95,6 +97,10 @@ class ImgurSearchController: UIViewController {
     } else {
       historyTableView.isHidden = false
     }
+  }
+
+  @objc func startSearch() {
+    viewModel.findImages(for: searchController?.searchBar.text)
   }
   
   @IBAction func getStartedClick(_ sender: Any) {
@@ -128,9 +134,8 @@ extension ImgurSearchController: UICollectionViewDataSource {
     // configure the footer based on the state
     switch viewModel.footerState {
     case .typing:
-      view.label.isHidden = false
-      view.label.text = "Click Search to find images"
-      view.activityView.stopAnimating()
+      view.label.isHidden = true
+      view.activityView.startAnimating()
     case .loading, .results:
       view.label.isHidden = true
       view.activityView.startAnimating()
@@ -162,8 +167,8 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    // load more rows when we get to the 8th last row
-    if indexPath.row == viewModel.numberOfImages() - 8 {
+    // load more rows when we get to the 15th last row
+    if indexPath.row == viewModel.numberOfImages() - 15 {
       viewModel.fetchNextPage()
     }
   }
@@ -189,12 +194,24 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-extension ImgurSearchController: UISearchBarDelegate {
-  
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    viewModel.findImages(for: searchBar.text)
+extension ImgurSearchController: UISearchResultsUpdating {
+  func updateSearchResults(for searchController: UISearchController) {
+    
+    // don't update anything if the text has not changed from the last request
+    if !viewModel.shouldRefresh(searchController.searchBar.text) {
+      return
+    }
+    
+    // allows for realtime searching
+    viewModel.clearResults()
+    
+    // add a deley for searching to allow typing w/o searching for every term in between
+    NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(startSearch), object: nil)
+    self.perform(#selector(startSearch), with: nil, afterDelay: 0.5)
   }
-  
+}
+
+extension ImgurSearchController: UISearchBarDelegate {
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     viewModel.clearResults()
   }

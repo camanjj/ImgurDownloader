@@ -34,7 +34,7 @@ class ImgurSearchViewModel {
   func findImages(for text: String?) {
     
     // only automatic search when there are more than 3 characters in the searchbar
-    guard let text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) else {
+    guard let text = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), !text.isEmpty else {
       return
     }
     
@@ -43,25 +43,13 @@ class ImgurSearchViewModel {
       return
     }
     
-    // handle history
-    historyManager.add(item: HistoryItem(term: text, timestamp: Date().timeIntervalSince1970))
-    historyUpdated()
-    
     // reset some vals
     self.currentTerm = text
     self.footerState = .loading
     self.images = []
     self.resultsUpdated(text)
     
-    imgurManager.findImages(with: text) { (images) in
-      if let images = images {
-        self.footerState = images.isEmpty ? .empty(text) : .results
-        self.images = images
-        self.currentPage = 1
-        self.resultsUpdated(self.currentTerm!)
-      }
-    }
-    
+    fetchImages(text, 1)
   }
 
   /// Fetches the images for the next page for the current search term
@@ -74,14 +62,42 @@ class ImgurSearchViewModel {
     default: break
     }
     
-    imgurManager.findImages(with: currentTerm ?? "", page: currentPage+1) { (images) in
-      if let images = images {
+    fetchImages(currentTerm ?? "", currentPage+1)
+  }
+  
+  private func fetchImages(_ text: String, _ page: Int) {
+    
+    imgurManager.findImages(with: text, page: currentPage+1) { (result) in
+      
+      switch result {
+      case .success(let images):
         self.footerState = images.isEmpty ? .empty(self.currentTerm!) : .results
-        self.images! += images
-        self.currentPage += 1
-        self.resultsUpdated(self.currentTerm!)
+        self.currentPage = page
+        
+        self.addTextToHistory(text)
+        
+        // append or overwrite images based on if the call was for the first page
+        if page == 1 {
+          self.images = images
+        } else {
+          self.images! += images
+        }
+        
+        self.resultsUpdated(text)
+      case .error:
+        // add the search item to the history
+        self.addTextToHistory(text)
+      case .cancelled: break // don't add to history if the request was cancelled
       }
     }
+    
+  }
+  
+  /// Add an entry to the history
+  func addTextToHistory(_ text: String) {
+    // add the text to the history
+    self.historyManager.add(item: HistoryItem(term: text, timestamp: Date().timeIntervalSince1970))
+    self.historyUpdated()
   }
 
   /// Gets the thumbnail link for the item at the specifed indexPath
@@ -90,6 +106,7 @@ class ImgurSearchViewModel {
     return URL(string: images[indexPath.row].thumbnail)
   }
   
+  /// Gets the image link as a string for the specified indexPath
   func imageLink(for indexPath: IndexPath) -> String? {
     guard let images = images, indexPath.row < images.count else { return nil }
     return images[indexPath.row].link
@@ -100,15 +117,25 @@ class ImgurSearchViewModel {
     return images?.count ?? 0
   }
   
+  /// Clears the results and sets the footer state to typing
   func clearResults() {
     images = []
     footerState = .typing
     resultsUpdated("")
+    currentTerm = nil
+  }
+  
+  
+  /// Method to check if the current search text is equal to the passed in search text
+  func shouldRefresh(_ text: String?) -> Bool {
+    return currentTerm != text
   }
   
   //MARK: TableView datasource
   func historyText(at indexPath: IndexPath) -> String {
-    return historyManager.history[indexPath.row].term
+    let item = historyManager.history.object(at: indexPath.row) as? HistoryItem
+    return item?.term ?? ""
+    
   }
   
   func numberOfHistoryItems() -> Int {
