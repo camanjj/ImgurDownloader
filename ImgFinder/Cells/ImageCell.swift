@@ -21,7 +21,8 @@ class ImageCell: UICollectionViewCell {
   
   override func prepareForReuse() {
     super.prepareForReuse()
-    imageView.image = nil
+//    imageView.image = nil
+//    activityView.startAnimating()
   }
   
 }

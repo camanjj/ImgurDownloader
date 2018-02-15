@@ -19,14 +19,19 @@ class ImgurSearchViewModel {
   private var currentPage = 1
   private var currentTerm: String?
   private var historyCache: [HistoryItem]?
+  private var didSaveCurrentTerm = false
+  private var imageTasks: [URLSessionDataTask]?
+  public var fetching = Set<String>()
+  
   
   // managers
   private var imgurManager = ImgurManager()
   private var historyManager: HistoryManager
   
   var footerState: FooterState = .typing
-  var resultsUpdated: ((String) -> ()) = { _ in } // search results update block
+  var resultsUpdated: ((String, Int) -> ()) = { _, _ in } // search results update block
   var historyUpdated: (() -> ()) = { } // history update block
+  var downloadedImage: ((String, Data) -> Void) = { _, _ in }
   
   
   init(dataContext: NSManagedObjectContext) {
@@ -51,11 +56,11 @@ class ImgurSearchViewModel {
     self.currentTerm = text
     self.footerState = .loading
     self.images = []
-    self.resultsUpdated(text)
+    self.resultsUpdated(text, -1)
     
     fetchImages(text, 1)
   }
-
+  
   /// Fetches the images for the next page for the current search term
   func fetchNextPage() {
     
@@ -70,8 +75,55 @@ class ImgurSearchViewModel {
   }
   
   
+  func fetchImage(with link: String) {
+    
+    // if we are already fetching for this link do nothing else
+    if fetching.contains(link) {
+      return
+    }
+    
+    fetching.insert(link)
+    
+    let session = URLSession.shared
+    
+    guard let url = URL(string: link) else {
+      return
+    }
+    
+    let task = session.dataTask(with: url) { (data, _, error) in
+      
+      if let error = error {
+        print("Error fetching image: \(error)")
+        return
+      }
+      
+      DispatchQueue.main.async {
+        
+        // make sure we can make an image from the data
+        guard let data = data else {
+          return
+        }
+        
+        self.downloadedImage(url.absoluteString, data)
+      }
+      
+      
+    }
+    
+    imageTasks?.append(task)
+    task.resume()
+    
+  }
+  
   /// Handles sending the request to imgur
   private func fetchImages(_ text: String, _ page: Int) {
+    
+    if page == 1 {
+      // reset flag if we are getting a new first page
+      didSaveCurrentTerm = false
+      imageTasks?.forEach { $0.cancel() } // stop any previous image fetches
+      imageTasks = nil
+    }
     
     imgurManager.findImages(with: text, page: page) { (result) in
       
@@ -79,8 +131,7 @@ class ImgurSearchViewModel {
       case .success(let images):
         self.footerState = images.isEmpty ? .empty(text) : .results
         self.currentPage = page
-        
-        self.addTextToHistory(text)
+        self.imageTasks = [URLSessionDataTask]()
         
         // append or overwrite images based on if the call was for the first page
         if page == 1 {
@@ -89,11 +140,8 @@ class ImgurSearchViewModel {
           self.images = (self.images ?? []) + images
         }
         
-        self.resultsUpdated(text)
-      case .error:
-        // add the search item to the history
-        self.addTextToHistory(text)
-      case .cancelled: break // don't add to history if the request was cancelled
+        self.resultsUpdated(text, images.count)
+      case .error, .cancelled: break // don't add to history if the request was cancelled
       }
     }
     
@@ -101,12 +149,19 @@ class ImgurSearchViewModel {
   
   /// Add an entry to the history
   func addTextToHistory(_ text: String) {
+    
+    if didSaveCurrentTerm == true {
+      return
+    }
+    
     // add the text to the history
     historyManager.add(term: text)
+    didSaveCurrentTerm = true
     historyCache = historyManager.getHistory()
     self.historyUpdated()
+    
   }
-
+  
   /// Gets the thumbnail link for the item at the specifed indexPath
   func thumbnail(for indexPath: IndexPath) -> URL? {
     guard let images = images, indexPath.row < images.count else { return nil }
@@ -128,7 +183,7 @@ class ImgurSearchViewModel {
   func clearResults() {
     images = []
     footerState = .typing
-    resultsUpdated("")
+    resultsUpdated("", -1)
     currentTerm = nil
   }
   
@@ -160,6 +215,7 @@ class ImgurSearchViewModel {
     }
     
     historyManager.remove(term: historyCache[indexPath.row].term!)
+    self.historyCache = historyManager.getHistory()
   }
   
 }

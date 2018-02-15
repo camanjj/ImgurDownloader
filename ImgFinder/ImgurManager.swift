@@ -75,7 +75,7 @@ class ImgurManager {
           return r + (gal.images ?? [])
         })
         result = .success(images)
-        print(String(data: data, encoding: .utf8)!)
+//        print(String(data: data, encoding: .utf8)!)
       } else {
         // error parsing response
         result = .error(nil)

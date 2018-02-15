@@ -21,6 +21,7 @@ class HistoryManager {
     historyEntity = NSEntityDescription.entity(forEntityName: "HistoryItem", in: context)!
   }
   
+  /// Adds/updates a history item
   func add(term: String) {
     
     let item = NSManagedObject(entity: historyEntity, insertInto: context)
@@ -36,10 +37,10 @@ class HistoryManager {
     
   }
   
+  /// Remove a history item from core data
   func remove(term: String) {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
     fetchRequest.predicate = NSPredicate(format: "term == '\(term)'")
-//    fetchRequest.fetchLimit = 1
     
     do {
       let items = try context.fetch(fetchRequest)
@@ -55,19 +56,20 @@ class HistoryManager {
   }
   
   /// Gets all of the history sorted by the timestamp
-  func getHistory() -> [HistoryItem] {
+  func getHistory() -> [HistoryItem]? {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
     fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "timestamp", ascending: false)]
-    return try! context.fetch(fetchRequest) as! [HistoryItem]
+    return try? context.fetch(fetchRequest) as! [HistoryItem]
   }
   
   
-  /// Queries the history by a term
-  func quertHistory(term: String) -> [HistoryItem] {
+  /// Queries the history by a term. only returns the top 5 results
+  func quertHistory(term: String) -> [HistoryItem]? {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
     fetchRequest.predicate = NSPredicate(format: "term CONTAINS %s", term)
     fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "timestamp", ascending: false)]
-    return try! context.fetch(fetchRequest) as! [HistoryItem]
+    fetchRequest.fetchLimit = 5
+    return try? context.fetch(fetchRequest) as! [HistoryItem]
   }
   
 }

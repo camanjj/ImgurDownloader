@@ -17,6 +17,7 @@
 		AD3E40FD202536040089415C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FC202536040089415C /* Image.swift */; };
 		AD60D56720360E730062CEB0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD60D56620360E730062CEB0 /* CoreData.framework */; };
 		AD60D58F2036103F0062CEB0 /* History.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD60D58D2036103F0062CEB0 /* History.xcdatamodeld */; };
+		ADBFB20E203642CF008CE7CF /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADBFB20D203642CF008CE7CF /* ImageDownloader.swift */; };
 		ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F182025481C00D4925B /* ImgurResponse.swift */; };
 		ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1B2025716900D4925B /* ImageCell.swift */; };
 		ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F1C2025716900D4925B /* ImageCell.xib */; };
@@ -39,6 +40,7 @@
 		AD3E40FC202536040089415C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		AD60D56620360E730062CEB0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AD60D58E2036103F0062CEB0 /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
+		ADBFB20D203642CF008CE7CF /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		ADC50F182025481C00D4925B /* ImgurResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurResponse.swift; sourceTree = "<group>"; };
 		ADC50F1B2025716900D4925B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		ADC50F1C2025716900D4925B /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				ADC50F1A202564C400D4925B /* Models */,
 				ADC50F212026696300D4925B /* Cells */,
 				ADDDB201202786E70077D826 /* HistoryManager.swift */,
+				ADBFB20D203642CF008CE7CF /* ImageDownloader.swift */,
 			);
 			path = ImgFinder;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				AD60D58F2036103F0062CEB0 /* History.xcdatamodeld in Sources */,
 				ADDDB202202786E70077D826 /* HistoryManager.swift in Sources */,
 				ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */,
+				ADBFB20E203642CF008CE7CF /* ImageDownloader.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
 				AD3E40E920252DA00089415C /* AppDelegate.swift in Sources */,
 				AD3E40FB202533360089415C /* ImgurManager.swift in Sources */,

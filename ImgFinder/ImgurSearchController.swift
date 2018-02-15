@@ -20,6 +20,8 @@ class ImgurSearchController: UIViewController {
   let historyId = "HistoryCell"
   
   let viewModel: ImgurSearchViewModel
+  let downloader = ImageDownloader()
+  
   
   required init?(coder aDecoder: NSCoder) {
     let delegate = UIApplication.shared.delegate! as! AppDelegate
@@ -40,7 +42,7 @@ class ImgurSearchController: UIViewController {
     self.definesPresentationContext = true
     
     // keep track when the search results have changed
-    viewModel.resultsUpdated = { [unowned self] term in
+    viewModel.resultsUpdated = { [unowned self] term, _ in
       self.imagesController?.collectionView?.reloadData()
     }
     
@@ -69,6 +71,63 @@ class ImgurSearchController: UIViewController {
     let footerNib = UINib(nibName: "SearchFooterView", bundle: nil)
     imagesController?.collectionView?.register(footerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "footer")
   }
+  
+  
+  /// Fetches an image from cache or web for a imageView at an indexPath
+  func fetchImage(with link: String, _ indexPath: IndexPath, _ imageView: UIImageView) {
+    
+    // check if the image is cached
+    if ImageCache.default.imageCachedType(forKey: link).cached {
+      ImageCache.default.retrieveImage(forKey: link, options: nil) {
+        image, cacheType in
+          imageView.image = image
+      }
+      return
+    }
+    
+    // if we are already fetching for this link do nothing else
+    if viewModel.fetching.contains(link) {
+      return
+    }
+    
+    viewModel.fetching.insert(link)
+    
+    let session = URLSession.shared
+    
+    guard let url = URL(string: link) else {
+      return
+    }
+    
+    downloader.downloadImage(url: url, imageView: imageView)
+    
+//    session.dataTask(with: url) { (data, _, error) in
+//
+//      if let error = error {
+//        print("Error fetching image: \(error)")
+//        return
+//      }
+//
+//      DispatchQueue.main.async {
+//
+//        // make sure we can make an image from the data
+//        guard let data = data, let image = UIImage(data: data) else {
+//          return
+//        }
+//
+//        // save image in cache
+//        ImageCache.default.store(image, forKey: link)
+//        imageView.image = image
+//
+//        // stop the activity indicator in the cell
+//        if let contentView = imageView.superview, let activityView = contentView.subviews.last as? UIActivityIndicatorView {
+//          activityView.stopAnimating()
+//        }
+//      }
+//
+//    }.resume()
+    
+  }
+
   
   /// configure the search controller
   func configureSearchController() {
@@ -126,7 +185,14 @@ extension ImgurSearchController: UICollectionViewDataSource {
     
     // load the thumbnail if valid
     if let link = viewModel.thumbnail(for: indexPath) {
-      cell.imageView.kf.setImage(with: ImageResource(downloadURL: link))
+      
+      if !ImageCache.default.imageCachedType(forKey: link.absoluteString).cached {
+        cell.imageView.image = nil
+        cell.activityView.startAnimating()
+      }
+      
+      fetchImage(with: link.absoluteString, indexPath, cell.imageView)
+//      cell.imageView.kf.setImage(with: ImageResource(downloadURL: link))
     }
     
     return cell
@@ -156,6 +222,12 @@ extension ImgurSearchController: UICollectionViewDataSource {
   }
 }
 
+extension ImgurSearchController: UICollectionViewDelegate {
+  
+  
+  
+}
+
 extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -181,6 +253,10 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
+    // add search term b/c we clicked on something
+    viewModel.addTextToHistory(searchController!.searchBar.text!)
+    
+    
     // present the image for panning and zooming
     guard let link = viewModel.imageLink(for: indexPath) else { return }
     let cell = collectionView.cellForItem(at: indexPath) as! ImageCell
@@ -198,6 +274,20 @@ extension ImgurSearchController: UICollectionViewDelegateFlowLayout {
     present(browser, animated: true, completion: {})
     
   }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    
+    if scrollView != historyTableView {
+      // we are in the collection view
+      
+      if viewModel.numberOfImages() > 0 {
+        // add history item when scrolling
+        viewModel.addTextToHistory(searchController!.searchBar.text!)
+      }
+      
+    }
+    
+  }
 }
 
 extension ImgurSearchController: UISearchResultsUpdating {
@@ -211,9 +301,7 @@ extension ImgurSearchController: UISearchResultsUpdating {
     // allows for realtime searching
     viewModel.clearResults()
     
-    // add a deley for searching to allow typing w/o searching for every term in between
-    NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(startSearch), object: nil)
-    self.perform(#selector(startSearch), with: nil, afterDelay: 0.65)
+    viewModel.findImages(for: searchController.searchBar.text)
   }
 }
 
@@ -249,6 +337,7 @@ extension ImgurSearchController: UITableViewDataSource, UITableViewDelegate {
     let text = viewModel.historyText(at: indexPath)
     searchController?.searchBar.becomeFirstResponder()
     searchController?.searchBar.text = text
+    viewModel.addTextToHistory(text)
     
   }
   
