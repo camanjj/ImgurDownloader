@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 enum FooterState {
   // note: typing is only used as an initial state
@@ -17,14 +18,21 @@ class ImgurSearchViewModel {
   private var images: [Image]?
   private var currentPage = 1
   private var currentTerm: String?
+  private var historyCache: [HistoryItem]?
   
   // managers
   private var imgurManager = ImgurManager()
-  private var historyManager = HistoryManager()
+  private var historyManager: HistoryManager
   
   var footerState: FooterState = .typing
   var resultsUpdated: ((String) -> ()) = { _ in } // search results update block
   var historyUpdated: (() -> ()) = { } // history update block
+  
+  
+  init(dataContext: NSManagedObjectContext) {
+    historyManager = HistoryManager(context: dataContext)
+    historyCache = historyManager.getHistory()
+  }
   
   /// Fetches the first page for the text given
   func findImages(for text: String?) {
@@ -94,7 +102,8 @@ class ImgurSearchViewModel {
   /// Add an entry to the history
   func addTextToHistory(_ text: String) {
     // add the text to the history
-    self.historyManager.add(item: HistoryItem(term: text, timestamp: Date().timeIntervalSince1970))
+    historyManager.add(term: text)
+    historyCache = historyManager.getHistory()
     self.historyUpdated()
   }
 
@@ -131,16 +140,26 @@ class ImgurSearchViewModel {
   
   //MARK: TableView datasource
   func historyText(at indexPath: IndexPath) -> String {
-    let item = historyManager.history.object(at: indexPath.row) as? HistoryItem
-    return item?.term ?? ""
+    
+    guard let historyCache = historyCache else {
+      return ""
+    }
+    
+    let item = historyCache[indexPath.row]
+    return item.term ?? ""
   }
   
   func numberOfHistoryItems() -> Int {
-    return historyManager.history.count
+    return historyCache?.count ?? 0
   }
   
   func removeHistoryItem(at indexPath: IndexPath) {
-    historyManager.remove(at: indexPath.row)
+    
+    guard let historyCache = historyCache else {
+      return
+    }
+    
+    historyManager.remove(term: historyCache[indexPath.row].term!)
   }
   
 }

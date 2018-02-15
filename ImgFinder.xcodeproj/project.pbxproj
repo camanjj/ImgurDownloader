@@ -15,13 +15,14 @@
 		AD3E40F320252DA00089415C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD3E40F120252DA00089415C /* LaunchScreen.storyboard */; };
 		AD3E40FB202533360089415C /* ImgurManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FA202533360089415C /* ImgurManager.swift */; };
 		AD3E40FD202536040089415C /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3E40FC202536040089415C /* Image.swift */; };
+		AD60D56720360E730062CEB0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD60D56620360E730062CEB0 /* CoreData.framework */; };
+		AD60D58F2036103F0062CEB0 /* History.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD60D58D2036103F0062CEB0 /* History.xcdatamodeld */; };
 		ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F182025481C00D4925B /* ImgurResponse.swift */; };
 		ADC50F1D2025716900D4925B /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1B2025716900D4925B /* ImageCell.swift */; };
 		ADC50F1E2025716900D4925B /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F1C2025716900D4925B /* ImageCell.xib */; };
 		ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */; };
 		ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC50F262026738900D4925B /* SearchFooterView.swift */; };
 		ADC50F292026738900D4925B /* SearchFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADC50F272026738900D4925B /* SearchFooterView.xib */; };
-		ADDDB2002026EAEE0077D826 /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */; };
 		ADDDB202202786E70077D826 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADDDB201202786E70077D826 /* HistoryManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,13 +37,14 @@
 		AD3E40F420252DA00089415C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD3E40FA202533360089415C /* ImgurManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurManager.swift; sourceTree = "<group>"; };
 		AD3E40FC202536040089415C /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		AD60D56620360E730062CEB0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AD60D58E2036103F0062CEB0 /* History.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = History.xcdatamodel; sourceTree = "<group>"; };
 		ADC50F182025481C00D4925B /* ImgurResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurResponse.swift; sourceTree = "<group>"; };
 		ADC50F1B2025716900D4925B /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		ADC50F1C2025716900D4925B /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		ADC50F1F2025996E00D4925B /* ImgurSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgurSearchViewModel.swift; sourceTree = "<group>"; };
 		ADC50F262026738900D4925B /* SearchFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFooterView.swift; sourceTree = "<group>"; };
 		ADC50F272026738900D4925B /* SearchFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchFooterView.xib; sourceTree = "<group>"; };
-		ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
 		ADDDB201202786E70077D826 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
 		C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImgFinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDF01D2DB8772FD247AD2F62 /* Pods-ImgFinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImgFinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ImgFinder/Pods-ImgFinder.debug.xcconfig"; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD60D56720360E730062CEB0 /* CoreData.framework in Frameworks */,
 				7170D400F2419309C6EBABCD /* Pods_ImgFinder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +66,7 @@
 		ABCFD5D3186E9E7717AA5A72 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AD60D56620360E730062CEB0 /* CoreData.framework */,
 				C1E302FE37EDD2CED41E0AC5 /* Pods_ImgFinder.framework */,
 			);
 			name = Frameworks;
@@ -109,7 +113,7 @@
 			children = (
 				AD3E40FC202536040089415C /* Image.swift */,
 				ADC50F182025481C00D4925B /* ImgurResponse.swift */,
-				ADDDB1FF2026EAEE0077D826 /* HistoryItem.swift */,
+				AD60D58D2036103F0062CEB0 /* History.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,8 +273,8 @@
 			files = (
 				AD3E40EB20252DA00089415C /* ImgurSearchController.swift in Sources */,
 				ADC50F282026738900D4925B /* SearchFooterView.swift in Sources */,
-				ADDDB2002026EAEE0077D826 /* HistoryItem.swift in Sources */,
 				AD3E40FD202536040089415C /* Image.swift in Sources */,
+				AD60D58F2036103F0062CEB0 /* History.xcdatamodeld in Sources */,
 				ADDDB202202786E70077D826 /* HistoryManager.swift in Sources */,
 				ADC50F202025996E00D4925B /* ImgurSearchViewModel.swift in Sources */,
 				ADC50F192025481C00D4925B /* ImgurResponse.swift in Sources */,
@@ -463,6 +467,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AD60D58D2036103F0062CEB0 /* History.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AD60D58E2036103F0062CEB0 /* History.xcdatamodel */,
+			);
+			currentVersion = AD60D58E2036103F0062CEB0 /* History.xcdatamodel */;
+			path = History.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = AD3E40DD20252DA00089415C /* Project object */;
 }

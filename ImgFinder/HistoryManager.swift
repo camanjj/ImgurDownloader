@@ -7,75 +7,64 @@
 //
 
 import Foundation
+import CoreData
 
 class HistoryManager {
   
-  private let maxHistory = 50
-  private let fileName = "history.json"
-  private let fileManager = FileManager.default
+  var historyEntity: NSEntityDescription
+  var context: NSManagedObjectContext
   
-  var history = NSMutableOrderedSet(capacity: 20)
   
-  init() {
-    // attempt to load the previous history items from json file
-    if let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-      
-      let url = directory.appendingPathComponent(fileName)
-      
-      do {
-        let data = try Data(contentsOf: url)
-        var historyArray: [HistoryItem] = try JSONDecoder().decode([HistoryItem].self, from: data)
-        
-        // sort the history
-        historyArray = historyArray.sorted { item1, item2 in return item1.timestamp > item2.timestamp }
-        
-        // add the hisrory to the set
-        history.addObjects(from: historyArray)
-        
-      } catch {
-        print("Error reading history from file")
+  init(context: NSManagedObjectContext) {
+    self.context = context
+    self.context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+    historyEntity = NSEntityDescription.entity(forEntityName: "HistoryItem", in: context)!
+  }
+  
+  func add(term: String) {
+    
+    let item = NSManagedObject(entity: historyEntity, insertInto: context)
+    
+    item.setValue(term, forKey: "term")
+    item.setValue(Date(), forKey: "timestamp")
+    
+    do {
+      try context.save()
+    } catch {
+      print("Could not save. \(error.localizedDescription)")
+    }
+    
+  }
+  
+  func remove(term: String) {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
+    fetchRequest.predicate = NSPredicate(format: "term EQUALS %s", term)
+    fetchRequest.fetchLimit = 1
+    
+    do {
+      if let item = try context.fetch(fetchRequest).first as? HistoryItem {
+        context.delete(item)
       }
-      
+    } catch {
+      print("Could not delete. \(error.localizedDescription)")
     }
+    
   }
   
-  func add(item: HistoryItem) {
-    
-    // remove the item if the term already exist in the history
-    if history.contains(item) {
-      history.remove(item)
-    }
-    
-    // limit the size of the history to 50 items
-    if history.count == maxHistory {
-      history.removeObject(at: maxHistory-1) // remove last history item
-    }
-    
-    history.insert(item, at: 0) // always add the new item to the beginning of the list
-    saveHistory()
+  /// Gets all of the history sorted by the timestamp
+  func getHistory() -> [HistoryItem] {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
+    fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "timestamp", ascending: false)]
+    return try! context.fetch(fetchRequest) as! [HistoryItem]
   }
   
-  func remove(at index: Int) {
-    if index < history.count {
-      history.removeObject(at: index)
-      saveHistory()
-    }
-  }
   
-  /// saves the history to a file
-  private func saveHistory() {
-    let historyArr = history.map({ $0 as! HistoryItem })
-    
-    if let jsonData = try? JSONEncoder().encode(historyArr), let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-      
-      let url = directory.appendingPathComponent(fileName)
-      
-      do {
-        try jsonData.write(to: url)
-      } catch {
-        print("Failed to save the history")
-      }
-    }
+  /// Queries the history by a term
+  func quertHistory(term: String) -> [HistoryItem] {
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
+    fetchRequest.predicate = NSPredicate(format: "term CONTAINS %s", term)
+    fetchRequest.sortDescriptors = [NSSortDescriptor.init(key: "timestamp", ascending: false)]
+    return try! context.fetch(fetchRequest) as! [HistoryItem]
   }
   
 }

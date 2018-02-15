@@ -19,7 +19,13 @@ class ImgurSearchController: UIViewController {
   let cellId = "ImageCell"
   let historyId = "HistoryCell"
   
-  let viewModel = ImgurSearchViewModel()
+  let viewModel: ImgurSearchViewModel
+  
+  required init?(coder aDecoder: NSCoder) {
+    let delegate = UIApplication.shared.delegate! as! AppDelegate
+    viewModel = ImgurSearchViewModel(dataContext: delegate.persistentContainer.viewContext)
+    super.init(coder: aDecoder)
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
