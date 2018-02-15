@@ -38,15 +38,18 @@ class HistoryManager {
   
   func remove(term: String) {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "HistoryItem")
-    fetchRequest.predicate = NSPredicate(format: "term EQUALS %s", term)
-    fetchRequest.fetchLimit = 1
+    fetchRequest.predicate = NSPredicate(format: "term == '\(term)'")
+//    fetchRequest.fetchLimit = 1
     
     do {
-      if let item = try context.fetch(fetchRequest).first as? HistoryItem {
+      let items = try context.fetch(fetchRequest)
+      if let item = items.first as? HistoryItem {
         context.delete(item)
+        try context.save()
       }
+      
     } catch {
-      print("Could not delete. \(error.localizedDescription)")
+      print("Could not delete/save. \(error.localizedDescription)")
     }
     
   }
